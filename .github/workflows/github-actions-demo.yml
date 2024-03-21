@@ -1,7 +1,11 @@
-name: GitHub Actions Demo
-on: [push]
+name: Construction et push de l'image DockerHub
+on:
+  push:
+    branches:
+      - main  # ajustez selon votre branche principale si nécessaire
+
 jobs:
-  Explore-GitHub-Actions:
+  build-and-push-image:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout du code
@@ -10,8 +14,11 @@ jobs:
       - name: Construction de l'image Docker
         run: docker build -t mon_app_flask .
       
+      - name: Tag de l'image Docker
+        run: docker tag mon_app_flask ${{ secrets.DOCKERHUB_USERNAME }}/mon_app_flask:latest
+      
       - name: Connexion au registre DockerHub
         run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
       
       - name: Pousser l'image vers DockerHub
-        run: docker push mon_app_flask
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/mon_app_flask:latest
