@@ -7,5 +7,11 @@ jobs:
       - name: Checkout du code
         uses: actions/checkout@v4
       
-      - name: Exécuter le script Python
-        run: python job.py
+      - name: Construction de l'image Docker
+        run: docker build -t mon_app_flask .
+      
+      - name: Connexion au registre DockerHub
+        run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+      
+      - name: Pousser l'image vers DockerHub
+        run: docker push mon_app_flask
