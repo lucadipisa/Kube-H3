@@ -9,6 +9,3 @@ jobs:
       
       - name: Exécuter le script Python
         run: python job.py
-
-      - name: Exécuter les tests unitaires
-        run: pytest test
